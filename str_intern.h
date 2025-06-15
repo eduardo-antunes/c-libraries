@@ -118,7 +118,7 @@ static StringView string_arena_copy(StringArena *ar, StringView sv) {
     // Check if any of the regions has enough space for sv
     StringRegion *reg = ar->first;
     while(reg != NULL) {
-        if(reg->count + sv.len <= reg->capacity) break;
+        if(reg->count + sv.len + 1 <= reg->capacity) break;
         reg = reg->next;
     }
 
@@ -132,7 +132,7 @@ static StringView string_arena_copy(StringArena *ar, StringView sv) {
         // There is one problem though: what if the normal growth can't fit the
         // provided string? In this case, the exceptional behavior is to make
         // the whole region the size of the string, to guarantee it fits
-        if(cap < sv.len) cap = sv.len;
+        if(cap < sv.len + 1) cap = sv.len + 1;
 
         reg = string_arena_region_new(ar, cap);
         if(ar->last != NULL) {
@@ -145,7 +145,8 @@ static StringView string_arena_copy(StringArena *ar, StringView sv) {
     // Here, reg definitely points to a region with enough free space
     char *ptr = &reg->contents[reg->count];
     memcpy(ptr, sv.text, sv.len);
-    reg->count += sv.len;
+    reg->count += sv.len + 1;
+    ptr[sv.len] = 0; // null byte for compatibility with libc
     sv.text = ptr;
     return sv;
 }

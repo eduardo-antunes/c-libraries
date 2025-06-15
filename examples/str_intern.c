@@ -26,6 +26,9 @@ int main() {
     if(sv_interned_eq(tigers, intern_buf))
         printf("Nice!\n");
 
+    // Teste libc compatibility
+    printf("String 1: %s\nString 2: %s\nIntern buf: %s\n",
+            s1.text, s2.text, intern_buf.text);
     string_repo_free(&r);
     return 0;
 }
