@@ -14,7 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Simple library for running tests in C
+// The essentials of automated testing.
+
+// Each test consists of a function that takes a generic pointer - might be
+// null, might point to some context, you decide - and returns an integer. You
+// put this function in a `test_info` structure along with a test name and some
+// other parameters. Group `test_info` values into an array terminated by
+// `END_OF_SUITE` and you've got a test suite in your hands. Now you just have
+// to pass that to the `test_suite_run` function along with a name for the suite
+// and the userdata pointer (passed to each test, in order) and the magic
+// happens.
+
+// The result of each test is treated specially by `test_suite_run`:
+// - TEST_RESULT_OK (0) means the test passed;
+// - TEST_RESULT_SKIP (77) means the test was skipped;
+// - TEST_RESULT_SKIP_SUITE (78) not only means the test was skipped, but also
+//   skips all of the following tests before they are run;
+// - TEST_RESULT_HARD_FAIL (99) means the test failed, even if `should_fail` was
+//   set.
+// - Any other value is treated the same as TEST_RESULT_FAIL (1), i.e. a failure
+//   or, if `should_fail` was set, a success.
 
 #ifndef _TEST_H
 #define _TEST_H
@@ -46,7 +65,7 @@ int test_suite_run(const char *name, test_info suite[], void *userdata);
 
 #define test_log(...) fprintf(stderr, __VA_ARGS__)
 
-#define esc             "\033"
+#define esc           "\033"
 #define color_reset   esc "[0m"
 #define color_green   esc "[0;32m"
 #define color_magenta esc "[0;35m"

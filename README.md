@@ -1,4 +1,8 @@
 This is a set of STB-style header-only libraries for doing various things in C.
-I've written them mostly for learning purposes and don't really recommend using them in serious
-projects. However, if you feel so inclined for some reason, you may use them under the lax terms
-of the Apache license.
+
+* `str.h`: string manipulation beyond what the standard library provides.
+* `test.h`: the essentials of automated testing.
+
+The details for each library can be found in the comments at the top of each
+source code file. The `tests` folder is reserved for automated testing using
+`test.h`.

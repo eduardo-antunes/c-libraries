@@ -14,7 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Yet another string library for C
+// String manipulation beyond what the standard library provides.
+
+// str.h offers two essential structures: `string` is a dynamically sized
+// character buffer, like the C++ std::string, and `string_view` is a constant
+// wide pointer to a section of some string. Both of them have the fields
+// `text`, a char pointer to their data, and length, the length of their data.
+// For `string`, `text` is guaranteed to be null terminated, so it is fully
+// compatible with all C functions that expect a string. For `string_view`, this
+// guarantee evidently can't be made, so you need to either convert it to a
+// `string` or use functions where the length is taken explicity. For printf
+// and friends, use SV_print and SV_print_arg.
+
+// For python users, the slicing functions work exactly like python slicing.
+// For users of more enlightened languages, foreach macros are provided.
 
 #ifndef _STR_H
 #define _STR_H
@@ -32,6 +45,9 @@ typedef struct {
     const char *text;
     isize length;
 } string_view;
+
+#define SV_print "%.*s"
+#define SV_print_arg(sv) ((int)(sv).length,(sv).text)
 
 #define string_foreach(ch, s) \
     ch = ((s)->length > 0) ? (s)->text[0] : 0; \
