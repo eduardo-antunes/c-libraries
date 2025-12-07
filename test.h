@@ -52,7 +52,7 @@ typedef struct {
     int should_fail;
 } test_info;
 
-#define END_OF_SUITE { .name = NULL, .fn = NULL, .should_fail = 0 }
+#define END_OF_SUITE (test_info){0}
 
 int test_suite_run(const char *name, test_info suite[], void *userdata);
 
