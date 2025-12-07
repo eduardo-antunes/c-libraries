@@ -25,6 +25,14 @@
 # are compatible with its testing infraestructure. For simpler projects though,
 # you may find this script to be enough
 
+if [ "$#" -gt 0 ]; then
+  test_suite="tests/$1.c"
+  gcc "$test_suite" -o a.out
+  ./a.out
+  rm ./a.out
+  exit
+fi
+
 first=1
 for test_suite in tests/*; do
   if [ $first -eq 1 ]; then
