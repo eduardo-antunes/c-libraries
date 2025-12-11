@@ -128,7 +128,10 @@ start:
     // Which option is it?
     status = _arg_parser_find_option(p, &opt_i, &arg_value,
             argv[p->index], short_option);
-    if(status != 0) return status;
+    if(status != 0) {
+        p->index += 1;
+        return status;
+    }
     option_info option = p->options[opt_i];
     if(arg_value != NULL) {
         p->index += 1;
